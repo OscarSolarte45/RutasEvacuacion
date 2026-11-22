@@ -1,139 +1,73 @@
 package estructuras;
+
 import modelo.Persona;
 
 public class TablaHash {
 
     private Persona[] tabla; // arreglo donde almacenarán las personas.
-    private int capacidad; //cantidad máxima de posiciones disponibles inicialmente.
-    private int cantidad; //número de personas registradas actualmente.
-    private boolean[] eliminados;
+    private int capacidad; // cantidad máxima de posiciones disponibles inicialmente.
+    private int cantidad; // número de personas registradas actualmente.
 
-  
-   public TablaHash(int capacidad) {
-    this.capacidad = capacidad;
-    this.tabla = new Persona[capacidad];
-    this.eliminados = new boolean[capacidad];
-    this.cantidad = 0;
-}
-    
-private int calcularIndice(String id) {
-    int codigo = id.hashCode(); //convierte el identificador en un número entero.
-return Math.abs(codigo % capacidad); //% capacidad obtiene el residuo de dividir ese número entre la capacidad. y Math.abs convierte el resultado en positivo si es negativo.
-}
-    
-
-
-public boolean insertar(Persona persona) {
-
-    int indice = calcularIndice(persona.getId());
-    int inicio = indice;
-    int primeraEliminada = -1;
-
-    while (tabla[indice] != null || eliminados[indice]) {
-
-        if (tabla[indice] != null &&
-            tabla[indice].getId().equals(persona.getId())) {
-            return false;
-        }
-
-        if (tabla[indice] == null && primeraEliminada == -1) {
-            primeraEliminada = indice;
-        }
-
-        indice = (indice + 1) % capacidad;
-
-        if (indice == inicio) {
-            break;
-        }
+    public TablaHash(int capacidad) {
+        this.capacidad = capacidad;
+        this.tabla = new Persona[capacidad];
+        this.cantidad = 0;
     }
 
-    if (primeraEliminada != -1) {
-        indice = primeraEliminada;
-    } else if (tabla[indice] != null) {
-        return false;
+    private int calcularIndice(String id) {
+        int codigo = id.hashCode(); // convierte el identificador en un número entero.
+        return Math.abs(codigo % capacidad); // % capacidad obtiene el residuo de dividir ese número entre la capacidad.
+                                             // y Math.abs convierte el resultado en positivo si es negativo.
     }
 
-    tabla[indice] = persona;
-    eliminados[indice] = false;
-    cantidad++;
+    public boolean insertar(Persona persona) {
 
-    return true;
-}
+        int indice = calcularIndice(persona.getId());
 
+        int inicio = indice;
 
+        while (tabla[indice] != null) {
 
+            if (tabla[indice].getId().equals(persona.getId())) {
+                return false;
+            }
 
-public Persona buscar(String id) {
+            indice = (indice + 1) % capacidad;
 
-    int indice = calcularIndice(id);
-    int inicio = indice;
-
-    while (tabla[indice] != null || eliminados[indice]) {
-
-        if (tabla[indice] != null &&
-            tabla[indice].getId().equals(id)) {
-
-            return tabla[indice];
+            if (indice == inicio) {
+                return false;
+            }
         }
 
-        indice = (indice + 1) % capacidad;
+        tabla[indice] = persona;
+        cantidad++;
 
-        if (indice == inicio) {
-            break;
-        }
+        return true;
     }
 
-    return null;
-}
-public int getCantidad() {
-    return cantidad;
-}
-public void mostrarTodos() {
+    public Persona buscar(String id) {
 
-    for (int i = 0; i < capacidad; i++) {
+        int indice = calcularIndice(id);
 
-        if (tabla[i] != null) {
+        int inicio = indice;
 
-            Persona persona = tabla[i];
+        while (tabla[indice] != null) {
 
-            System.out.println(
-                "ID: " + persona.getId()
-                + " | Nombre: " + persona.getNombre()
-                + " | Piso: " + persona.getPiso()
-                + " | Habitacion: " + persona.getHabitacion()
-                + " | Evacuado: " + persona.isEvacuado()
-            );
-        }
-    }
-}
+            if (tabla[indice].getId().equals(id)) {
+                return tabla[indice];
+            }
 
+            indice = (indice + 1) % capacidad;
 
-public boolean eliminar(String id) {
-
-    int indice = calcularIndice(id);
-    int inicio = indice;
-
-    while (tabla[indice] != null || eliminados[indice]) {
-
-        if (tabla[indice] != null &&
-            tabla[indice].getId().equals(id)) {
-
-            tabla[indice] = null;
-            eliminados[indice] = true;
-            cantidad--;
-
-            return true;
+            if (indice == inicio) {
+                break;
+            }
         }
 
-        indice = (indice + 1) % capacidad;
-
-        if (indice == inicio) {
-            break;
-        }
+        return null;
     }
 
-    return false;
-}
-
-
+    public int getCantidad() {
+        return cantidad;
+    }
 }
