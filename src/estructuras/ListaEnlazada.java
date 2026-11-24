@@ -19,6 +19,20 @@ public class ListaEnlazada<T> {
     public int getTamaño() {
         return tamaño;
     }
+    public T obtener(int indice) {
+
+    if (indice < 0 || indice >= tamaño) {
+        return null;
+    }
+
+    NodoLista<T> actual = cabeza;
+
+    for (int i = 0; i < indice; i++) {
+        actual = actual.getSiguiente();
+    }
+
+    return actual.getDato();
+}
 
     public void agregar(T dato) {
         NodoLista<T> nuevo = new NodoLista<>(dato);

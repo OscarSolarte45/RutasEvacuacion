@@ -57,5 +57,13 @@ public class Persona {
     }
     public void evacuar() {
     this.evacuado = true;
-}
+    }
+    @Override
+    public String toString() {
+    return "ID: " + id
+            + " | Nombre: " + nombre
+            + " | Piso: " + piso
+            + " | Habitacion: " + habitacion
+            + " | Evacuado: " + evacuado;
+    }
 }
