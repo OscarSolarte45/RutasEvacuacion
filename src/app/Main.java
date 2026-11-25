@@ -1,4 +1,7 @@
 package app;
+import servicios.ExportadorPlan;
+import java.io.IOException;
+import java.nio.file.Path;
 import estructuras.TablaHash;
 import modelo.Edificio;
 import modelo.NodoGrafo;
@@ -121,6 +124,19 @@ public class Main {
         simulador.agregarPersona(carlos);
         simulador.agregarPersona(maria);
         simulador.agregarPersona(andres);
+
+                // 7.1 EXPORTAR PLAN DE EVACUACION A .TXT
+
+        ExportadorPlan exportador = new ExportadorPlan(
+                edificio, gestionOcupantes.getOcupantes()
+        );
+
+        try {
+            Path archivo = exportador.exportarATxt("plan_evacuacion.txt");
+            System.out.println("\nPlan de evacuacion exportado en: " + archivo);
+        } catch (IOException e) {
+            System.out.println("No se pudo exportar el plan: " + e.getMessage());
+        }
 
         // 8. EJECUTAR EVACUACION
 

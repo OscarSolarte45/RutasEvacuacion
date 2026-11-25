@@ -10,6 +10,7 @@ package algoritmos;
  Encuentra el camino de menor costo.
  Tiene en cuenta el peso de cada conexión.
 */
+import estructuras.ListaEnlazada;
 import modelo.NodoGrafo;
 import estructuras.Pila;
 import modelo.Arista;
@@ -151,6 +152,31 @@ public class Dijkstra {
     }
 
     System.out.println("Costo total: " + distancias[indiceDestino]);
+}
+    // Devuelve la ruta (en orden, de origen a destino) o null si no hay camino.
+    public ListaEnlazada<NodoGrafo> obtenerRuta(NodoGrafo destino) {
+
+    int indiceDestino = obtenerIndice(destino);
+
+    if (indiceDestino == -1 || distancias[indiceDestino] == Double.MAX_VALUE) {
+        return null;
+    }
+
+    Pila<NodoGrafo> pila = new Pila<>();
+    NodoGrafo actual = destino;
+
+    while (actual != null) {
+        pila.apilar(actual);
+        actual = anteriores[obtenerIndice(actual)];
+    }
+
+    ListaEnlazada<NodoGrafo> ruta = new ListaEnlazada<>();
+
+    while (!pila.estaVacia()) {
+        ruta.agregar(pila.desapilar());
+    }
+
+    return ruta;
 }
     public double obtenerDistancia(NodoGrafo destino) {
 

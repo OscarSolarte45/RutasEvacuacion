@@ -18,6 +18,9 @@ public class GestionOcupantes {
     public void mostrarOcupantes() {
         ocupantes.mostrar();
     }
+        public ListaEnlazada<Persona> getOcupantes() {
+        return ocupantes;
+    }
 
     public int getCantidadOcupantes() {
         return ocupantes.getTamaño();
