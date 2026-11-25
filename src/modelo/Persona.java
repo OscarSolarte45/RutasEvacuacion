@@ -55,6 +55,7 @@ public class Persona {
     public void setEvacuado(boolean evacuado) {
         this.evacuado = evacuado;
     }
+
     public void evacuar() {
     this.evacuado = true;
     }
@@ -66,4 +67,18 @@ public class Persona {
             + " | Habitacion: " + habitacion
             + " | Evacuado: " + evacuado;
     }
+        this.evacuado = true;
+    }
+
+    @Override
+    public String toString() {
+        return 
+        
+        "id: " + id + " | " + 
+        "nombre: " + nombre + " | " +
+        " (piso: " + piso + ", " 
+        + habitacion + ")"
+        + (evacuado ? " [evacuado]" : "");
+    }
+
 }

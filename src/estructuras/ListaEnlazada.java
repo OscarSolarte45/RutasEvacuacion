@@ -1,23 +1,27 @@
 
 package estructuras;
-public class ListaEnlazada<T> {
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class ListaEnlazada<T> implements Iterable<T> {
 
     private NodoLista<T> cabeza;
     private NodoLista<T> cola;
-    private int tamaño;
+    private int tamanio;
 
     public ListaEnlazada() {
         cabeza = null;
         cola = null;
-        tamaño = 0;
+        tamanio = 0;
     }
 
     public boolean estaVacia() {
         return cabeza == null;
     }
 
-    public int getTamaño() {
-        return tamaño;
+    public int getTamanio() {
+        return tamanio;
     }
     public T obtener(int indice) {
 
@@ -45,7 +49,7 @@ public class ListaEnlazada<T> {
             cola = nuevo;
         }
 
-        tamaño++;
+        tamanio++;
     }
 
     public boolean buscar(T dato) {
@@ -69,7 +73,7 @@ public class ListaEnlazada<T> {
 
         if (cabeza.getDato().equals(dato)) {
             cabeza = cabeza.getSiguiente();
-            tamaño--;
+            tamanio--;
 
             if (cabeza == null) {
                 cola = null;
@@ -90,7 +94,7 @@ public class ListaEnlazada<T> {
                     cola = actual;
                 }
 
-                tamaño--;
+                tamanio--;
                 return true;
             }
 
@@ -98,6 +102,45 @@ public class ListaEnlazada<T> {
         }
 
         return false;
+    }
+
+    public T obtener(int indice) {
+        if (indice < 0 || indice >= tamanio) {
+            throw new IndexOutOfBoundsException("indice " + indice + ", tamanio " + tamanio);  //Excepción que indica que se intentó acceder a una posición inexistente.
+        }
+        NodoLista<T> actual = cabeza;
+        for (int i = 0; i < indice; i++) {
+            actual = actual.getSiguiente();
+        }
+        return actual.getDato();
+    }
+
+    public void vaciar() {
+        cabeza = null;
+        cola = null;
+        tamanio = 0;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private NodoLista<T> actual = cabeza;
+
+            @Override
+            public boolean hasNext() {
+                return actual != null;
+            }
+
+            @Override
+            public T next() {
+                if (actual == null) {
+                    throw new NoSuchElementException();
+                }
+                T dato = actual.getDato();
+                actual = actual.getSiguiente();
+                return dato;
+            }
+        };
     }
 
     public void mostrar() {
